@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fde3ec">
+<title>Котик-почтальон</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f6a6c1' d='M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6C19 16.5 12 21 12 21z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@500;700;800&family=Pacifico&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app" id="invite">
+  <main class="stage" id="stage">
+    <svg class="float" style="left:6%;top:18%" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6C19 16.5 12 21 12 21z"/></svg>
+    <svg class="float" style="right:8%;top:30%" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6C19 16.5 12 21 12 21z"/></svg>
+    <svg class="float" style="left:14%;top:62%" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>
+    <svg class="float" style="right:16%;top:10%" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>
+    <div class="floor"></div>
+
+    <p class="say" id="say" aria-live="polite">Тут кое-что для тебя. Потри карточку</p>
+
+    <section class="card" id="card">
+      <h1>Пойдёшь со мной завтра на&nbsp;прогулку? <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6C19 16.5 12 21 12 21z"/></svg></h1>
+      <canvas id="scratch" aria-label="Стираемый слой. Потри, чтобы открыть вопрос"></canvas>
+    </section>
+    <div class="helper" id="helper"><button class="link" id="skip" type="button">не получается стереть? жми сюда</button></div>
+    <div class="answers" id="answers">
+      <button class="btn yes" id="yes" type="button">Да!</button>
+      <button class="btn no" id="no" type="button">Нет</button>
+    </div>
+
+    <form class="letter" id="letter" hidden>
+      <h2>Наша завтрашняя прогулка</h2>
+      <div class="lbl"><label for="where">Куда пойдём (твой вариант):</label></div>
+      <textarea id="where" rows="2" maxlength="300" placeholder="парк, набережная, туда где красиво…" enterkeyhint="next"></textarea>
+      <div class="lbl"><label for="wish">Мои пожелания:</label></div>
+      <textarea id="wish" rows="3" maxlength="500" placeholder="во сколько, что взять с собой, чего хочется…"></textarea>
+      <div class="hint">можно добавить одним касанием:</div>
+      <div class="chips" id="ideas">
+        <button type="button" class="chip">кофе с собой</button>
+        <button type="button" class="chip">мороженое</button>
+        <button type="button" class="chip">много фоточек</button>
+        <button type="button" class="chip">держаться за ручки</button>
+        <button type="button" class="chip">зайти перекусить</button>
+        <button type="button" class="chip">цветочек</button>
+        <button type="button" class="chip">обнимашки</button>
+      </div>
+      <div class="give"><button class="btn yes" id="give" type="submit">Отдать котику</button></div>
+    </form>
+
+    <div class="bigenv" id="bigenv" hidden>
+      <svg viewBox="0 0 220 140" aria-hidden="true">
+        <rect x="3" y="3" width="214" height="134" rx="12" fill="var(--lilac)" stroke="var(--ink)" stroke-width="4"/>
+        <path d="M5 135 L95 68 M215 135 L125 68" stroke="var(--ink)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path class="flap" id="flap" d="M5 5 L110 82 L215 5 Z" fill="var(--lilac-d)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+        <path id="seal" d="M110 102s-15-9-19-18a10 10 0 0 1 19-6 10 10 0 0 1 19 6c-4 9-19 18-19 18z" fill="var(--pink)" stroke="var(--ink)" stroke-width="3" opacity="0"/>
+      </svg>
+    </div>
+
+    <section class="final" id="final" hidden>
+      <h2>Письмо доставлено!</h2>
+      <p id="finalNote">Почти без происшествий. Завтра гуляем!</p>
+      <div class="summary" id="summary"></div>
+      <div class="row">
+        <button class="btn yes" id="toHub" type="button">К нашей прогулке</button>
+        <button class="btn" id="copy" type="button" hidden>Скопировать</button>
+      </div>
+      <div class="row"><button class="link" id="again" type="button">посмотреть ещё раз</button></div>
+      <div class="copied" id="copied" aria-live="polite"></div>
+    </section>
+
+    <div class="catwrap" id="cat" aria-hidden="true">
+      <div class="catflip">
+        <div class="catbody">
+          <svg viewBox="0 0 200 170">
+            <g class="tail">
+              <path d="M30 128 C 10 128, 4 108, 14 98" stroke="var(--line)" stroke-width="15" fill="none" stroke-linecap="round"/>
+              <path d="M30 128 C 10 128, 4 108, 14 98" stroke="var(--fill)" stroke-width="9" fill="none" stroke-linecap="round"/>
+            </g>
+            <rect class="leg legB" x="40" y="136" width="22" height="24" rx="11" fill="var(--fill)" stroke="var(--line)" stroke-width="3.5"/>
+            <rect class="leg legA" x="138" y="136" width="22" height="24" rx="11" fill="var(--fill)" stroke="var(--line)" stroke-width="3.5"/>
+            <g class="squish">
+              <path d="M50 46 Q 46 18 60 14 Q 72 18 84 34 Z" fill="var(--fill)" stroke="var(--line)" stroke-width="3.5" stroke-linejoin="round"/>
+              <path d="M57 38 Q 56 24 62 22 Q 68 26 74 34 Z" fill="var(--ear)"/>
+              <path d="M128 32 Q 142 14 154 16 Q 164 22 160 50 Z" fill="var(--fill)" stroke="var(--line)" stroke-width="3.5" stroke-linejoin="round"/>
+              <path d="M136 32 Q 146 22 152 24 Q 156 30 154 40 Z" fill="var(--ear)"/>
+              <path d="M34 152 C 14 150, 12 112, 22 88 C 34 52, 72 30, 106 30 C 146 30, 184 56, 188 102 C 191 138, 176 152, 152 152 Z"
+                    fill="var(--fill)" stroke="var(--line)" stroke-width="4" stroke-linejoin="round"/>
+              <ellipse class="eye" cx="117" cy="90" rx="5" ry="6.5" fill="var(--line)"/>
+              <ellipse class="eye" cx="160" cy="88" rx="5" ry="6.5" fill="var(--line)"/>
+              <circle cx="118.6" cy="87.6" r="1.8" fill="#fff"/>
+              <circle cx="161.6" cy="85.6" r="1.8" fill="#fff"/>
+              <ellipse cx="106" cy="106" rx="10" ry="5.5" fill="var(--blush)" opacity=".8"/>
+              <ellipse cx="172" cy="103" rx="10" ry="5.5" fill="var(--blush)" opacity=".8"/>
+              <path d="M131 99 q4.5 5 9 0 q4.5 5 9 0" stroke="var(--line)" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <g class="plaster" transform="rotate(-18 100 38)">
+                <rect x="82" y="31" width="36" height="13" rx="6" fill="#ffe0c2" stroke="var(--line)" stroke-width="2.5"/>
+                <path d="M96 34 v7 M104 34 v7" stroke="var(--line)" stroke-width="1.6" opacity=".6"/>
+              </g>
+            </g>
+            <rect class="leg legA" x="58" y="138" width="22" height="22" rx="11" fill="var(--fill)" stroke="var(--line)" stroke-width="3.5"/>
+            <rect class="leg legB" x="120" y="138" width="22" height="22" rx="11" fill="var(--fill)" stroke="var(--line)" stroke-width="3.5"/>
+          </svg>
+          <div class="carry"></div>
+          <div class="stars"><svg viewBox="0 0 100 40"><g fill="currentColor" stroke="var(--ink)" stroke-width="2"><path d="M12 14l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z"/><path d="M50 2l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z"/><path d="M86 14l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z"/></g></svg></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<template id="tplPaper">
+  <svg viewBox="0 0 50 44"><g transform="rotate(-8 25 22)"><rect x="5" y="4" width="40" height="34" rx="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"/><path d="M12 14h26M12 21h26M12 28h18" stroke="var(--rule)" stroke-width="3" stroke-linecap="round"/></g></svg>
+</template>
+<template id="tplEnv">
+  <svg viewBox="0 0 60 42"><rect x="2" y="2" width="56" height="38" rx="5" fill="var(--lilac)" stroke="var(--ink)" stroke-width="3"/><path d="M4 4 L30 24 L56 4" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linejoin="round"/><path d="M30 31s-5-3-6.5-6a3.4 3.4 0 0 1 6.5-2 3.4 3.4 0 0 1 6.5 2c-1.5 3-6.5 6-6.5 6z" fill="var(--pink)" stroke="var(--ink)" stroke-width="1.6"/></svg>
+</template>
+
+
+<div class="hub" id="hub" hidden>
+  <header class="hub-head">
+    <h1>Наша прогулка</h1>
+    <p>Котики откроют новые этапы прямо во время свидания. Заглядывай сюда.</p>
+  </header>
+  <ul class="stage-list" id="stageList"></ul>
+  <div class="hub-cats" id="hubCats" aria-hidden="true"></div>
+  <div class="row"><button class="link" id="replay" type="button">посмотреть приглашение ещё раз</button></div>
+</div>
+
+<div class="play" id="play" hidden>
+  <button class="link back" id="back" type="button">← к этапам</button>
+  <div id="playBody"></div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
