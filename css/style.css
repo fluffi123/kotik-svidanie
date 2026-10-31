@@ -252,3 +252,9 @@ textarea::placeholder { color: var(--ink); opacity: .4; }
 @keyframes dot { 0%, 80%, 100% { transform: scale(.5); opacity: .4; } 40% { transform: scale(1); opacity: 1; } }
 .kissmark { position: absolute; width: 110px; z-index: 8; pointer-events: none; }
 .kissmark svg { width: 100%; display: block; }
+.turn { margin: 0; text-align: center; font-weight: 800; font-size: 14px; letter-spacing: .03em; text-transform: uppercase; color: var(--pink-d); }
+.reveal { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.reveal div { background: #fff; border: 2px solid var(--lilac-d); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px; text-align: center; }
+.reveal small { font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; opacity: .6; }
+.reveal b { font-size: 17px; line-height: 1.25; overflow-wrap: anywhere; }
+.reveal.same div { background: var(--mint); border-color: var(--ink); }

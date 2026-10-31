@@ -4,9 +4,10 @@ import { STAGES, stageById } from "./content.js";
 import * as quiz from "./stages/quiz.js";
 import * as deck from "./stages/deck.js";
 import * as form from "./stages/form.js";
+import * as match from "./stages/match.js";
 import { initScenes } from "./scenes.js";
 
-const ENGINES = { quiz, deck, form };
+const ENGINES = { quiz, deck, form, match };
 const $ = id => document.getElementById(id);
 const views = { invite: $("invite"), hub: $("hub"), play: $("play") };
 
@@ -60,6 +61,10 @@ function describe(s, data) {
   if (s.type === "quiz") {
     const lines = data.answers.map(a => `• ${a.q}\n   ${a.a}${a.ok === true ? " ✅" : a.ok === false ? " ❌" : ""}`);
     return `🧠 ${s.title}\nРезультат: ${data.score} из ${data.total}\n\n${lines.join("\n")}`;
+  }
+  if (s.type === "match") {
+    const lines = data.answers.map(a => `${a.same ? "✅" : "💬"} ${a.q}\n   она: ${a.her}\n   ты: ${a.his}`);
+    return `💞 ${s.title}\nСовпали в ${data.matches} из ${data.total}\n\n${lines.join("\n")}`;
   }
   if (s.type === "form") {
     const lines = s.fields.filter(f => data[f.id] != null).map(f =>
