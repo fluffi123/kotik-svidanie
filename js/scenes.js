@@ -43,6 +43,50 @@ const SVG = {
   polaroid: `<svg viewBox="0 0 60 70"><rect x="2" y="2" width="56" height="66" rx="3" fill="#fff" stroke="var(--ink)" stroke-width="2.5"/>
     <rect x="8" y="8" width="44" height="40" fill="var(--lilac)"/><circle cx="22" cy="32" r="8" fill="#fff" stroke="var(--ink)" stroke-width="1.5"/>
     <circle cx="38" cy="32" r="8" fill="var(--grey-cat)" stroke="var(--ink)" stroke-width="1.5"/><path d="${HEART_PATH}" transform="translate(23 6) scale(.6)" fill="var(--pink-d)"/></svg>`,
+  lavender: (() => {
+    const tops = [[10, 12], [17, 5], [25, 2], [33, 5], [40, 12], [21, 14], [30, 13]];
+    const stems = tops.map(([x, y]) => `<path d="M25 62 Q${(25 + x) / 2} ${(62 + y) / 2 + 6} ${x} ${y + 14}" stroke="#7fae6a" stroke-width="2" fill="none"/>`).join("");
+    const buds = tops.map(([x, y]) => [0, 1, 2, 3, 4].map(k =>
+      `<ellipse cx="${x + (k % 2 ? 1.6 : -1.6)}" cy="${y + k * 3.2}" rx="2.6" ry="2.1" fill="${k % 2 ? "#a98ae0" : "#8f6fd0"}"/>`).join("")).join("");
+    return `<svg viewBox="0 0 50 82">${stems}${buds}
+      <path d="M9 44 L25 80 L41 44 Q25 52 9 44 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M15 52 L25 76 L35 52" stroke="var(--lilac-d)" stroke-width="2" fill="none" opacity=".6"/>
+      <path d="M25 58 q-10 -8 -11 0 q1 5 11 0 q10 5 11 0 q-1 -8 -11 0 M25 58 l-4 9 M25 58 l4 9" fill="var(--pink)" stroke="var(--ink)" stroke-width="1.8"/></svg>`;
+  })(),
+  sakuraBranch: (() => {
+    const flower = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">${[0, 72, 144, 216, 288].map(a =>
+      `<ellipse cx="0" cy="-5" rx="3.6" ry="5" fill="#fbd0dc" stroke="#e48fab" stroke-width=".9" transform="rotate(${a})"/>`).join("")}<circle r="1.8" fill="#f3c64e"/></g>`;
+    return `<svg viewBox="0 0 130 70">
+      <path d="M130 6 Q92 14 70 30 Q48 46 8 50 M88 20 Q84 6 74 2 M60 36 Q58 54 48 64" stroke="#8a5a44" stroke-width="5" fill="none" stroke-linecap="round"/>
+      ${flower(112, 12)}${flower(92, 26, .9)}${flower(74, 6, .8)}${flower(66, 38)}${flower(44, 48, .9)}${flower(50, 62, .8)}${flower(20, 50, .8)}</svg>`;
+  })(),
+  petal: `<svg viewBox="0 0 12 10"><path d="M6 9 C0 6 1 1 4 1 C5 1 6 2 6 3 C6 2 7 1 8 1 C11 1 12 6 6 9Z" fill="#fbd0dc" stroke="#e48fab" stroke-width=".8"/></svg>`,
+  fuji: `<svg viewBox="0 0 308 208">
+    <defs><linearGradient id="fujiSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9c4"/><stop offset="1" stop-color="#f7b7cf"/></linearGradient>
+    <clipPath id="fujiClip"><rect width="308" height="208" rx="26"/></clipPath></defs>
+    <g clip-path="url(#fujiClip)">
+      <rect width="308" height="208" fill="url(#fujiSky)"/>
+      <circle class="sun" cx="236" cy="78" r="26" fill="#ff9fae" opacity=".85"/>
+      <path d="M40 60 h40 M56 52 h30 M200 40 h36" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+      <path d="M-10 196 L118 74 Q140 60 162 74 L320 196 Z" fill="var(--lilac-d)" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M118 74 Q140 60 162 74 L152 90 L144 82 L136 94 L128 82 Z" fill="#fff" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M150 34 l6 4 l6 -4 M170 26 l5 3 l5 -3" stroke="var(--ink)" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </g></svg>`,
+  matcha: `<svg viewBox="0 0 52 34">
+    <path class="steam" d="M20 6 q-4 -4 0 -8 M32 6 q-4 -4 0 -8" stroke="#8fbf6f" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".6"/>
+    <path d="M3 10 Q26 44 49 10 Z" fill="#f3e6cf" stroke="var(--ink)" stroke-width="2.6" stroke-linejoin="round"/>
+    <ellipse cx="26" cy="10" rx="23" ry="4.5" fill="#9ccc7a" stroke="var(--ink)" stroke-width="2.2"/>
+    <circle cx="20" cy="10" r="1.2" fill="#d9f0c4"/><circle cx="30" cy="9" r="1.5" fill="#d9f0c4"/>
+    <path d="M10 20 q16 8 32 0" stroke="#e48fab" stroke-width="2" fill="none" opacity=".7"/></svg>`,
+  whisk: `<svg viewBox="0 0 20 46"><rect x="7" y="0" width="6" height="20" rx="2" fill="#e8cf9a" stroke="var(--ink)" stroke-width="2"/>
+    <path d="M10 20 Q2 30 4 44 M10 20 Q7 32 8 45 M10 20 Q13 32 12 45 M10 20 Q18 30 16 44" stroke="#c9a96a" stroke-width="2" fill="none"/>
+    <path d="M3 44 Q10 47 17 44" stroke="var(--ink)" stroke-width="2" fill="none"/></svg>`,
+  lantern: color => `<svg viewBox="0 0 30 50">
+    <rect x="9" y="4" width="12" height="5" rx="1.5" fill="var(--ink)"/>
+    <ellipse cx="15" cy="24" rx="13" ry="15" fill="${color}" stroke="var(--ink)" stroke-width="2.4"/>
+    <path d="M3 19 Q15 23 27 19 M2 25 Q15 29 28 25 M3 31 Q15 35 27 31" stroke="var(--ink)" stroke-width="1.3" fill="none" opacity=".45"/>
+    <rect x="9" y="38" width="12" height="4" rx="1.5" fill="var(--ink)"/>
+    <path d="M15 42 v6 M12 48 h6" stroke="#e48fab" stroke-width="2"/></svg>`,
 };
 
 export function initScenes(box, caption) {
@@ -278,6 +322,118 @@ export function initScenes(box, caption) {
         await fadeOut(g);
       },
     },
+    {
+      name: "Букет лаванды",
+      async run() {
+        const b = prop(SVG.lavender, 168, 84, 40, 5);
+        await pop(b, 500);
+        // the grey cat carries the bouquet over to the white one
+        await Promise.all([
+          move(grey, [{ transform: "none" }, { transform: "translateX(-14px) translateY(-8px)" }, { transform: "translateX(-28px)" }], 700),
+          move(b, [{ transform: "none" }, { transform: "translate(-30px, -10px) rotate(-12deg)" }, { transform: "translate(-62px, 0) rotate(-20deg)" }], 700),
+        ]);
+        box.classList.add("blushing");
+        const t = text("это тебе", 196, 44, 24);
+        pop(t);
+        await move(white, [{ transform: "none" }, { transform: "scale(1.08, .92)" }, { transform: "translateY(-18px) rotate(-6deg)" }, { transform: "none" }, { transform: "translateY(-10px)" }, { transform: "none" }], 1200, { easing: "ease-out" });
+        hearts(108, 90, 8, 80);
+        // a few lavender buds drift away
+        for (let i = 0; i < 6; i++) {
+          const bud = prop(`<svg viewBox="0 0 6 6"><ellipse cx="3" cy="3" rx="2.6" ry="2.1" fill="#a98ae0"/></svg>`, 108 + Math.random() * 20, 84, 7, 6);
+          move(bud, [{ transform: "none", opacity: 1 }, { transform: `translate(${(Math.random() - .5) * 90}px, ${-30 - Math.random() * 40}px) rotate(120deg)`, opacity: 0 }], 1300, { delay: i * 120 }).then(() => bud.remove());
+        }
+        await wait(1600);
+        fadeOut(t);
+        await fadeOut(b);
+        box.classList.remove("blushing");
+      },
+    },
+    {
+      name: "Ханами",
+      async run() {
+        const branch = prop(SVG.sakuraBranch, 160, -18, 130, 1);
+        await move(branch, [{ opacity: 0, transform: "translateX(30px)" }, { opacity: 1, transform: "none" }], 600);
+        branch.style.transformOrigin = "100% 0";
+        anims.push(branch.animate([{ transform: "rotate(0)" }, { transform: "rotate(2deg)" }, { transform: "rotate(0)" }], { duration: T(1800), iterations: 3 }));
+        move(white, [{ transform: "none" }, { transform: "rotate(-6deg) translateX(6px)" }], 600);
+        move(grey, [{ transform: "none" }, { transform: "rotate(6deg) translateX(-6px)" }], 600);
+        for (let i = 0; i < 22; i++) {
+          const x = 20 + Math.random() * 260, drift = (Math.random() - .3) * -90;
+          const p = prop(SVG.petal, x, -10, 10 + Math.random() * 6, 3);
+          move(p, [{ transform: "translate(0,0) rotate(0)", opacity: 0 }, { opacity: 1, offset: .1 },
+                   { transform: `translate(${drift}px, 195px) rotate(${360 + Math.random() * 360}deg)`, opacity: .9 }],
+            2200 + Math.random() * 1400, { delay: Math.random() * 1800, easing: "ease-in" }).then(() => p.remove());
+        }
+        await wait(3400);
+        hearts(140, 100, 5);
+        await wait(500);
+        await fadeOut(branch);
+      },
+    },
+    {
+      name: "Закат у Фудзи",
+      async run() {
+        const bg = prop(SVG.fuji, -14, -14, 308, 0);
+        await move(bg, [{ opacity: 0 }, { opacity: 1 }], 800);
+        const sun = bg.querySelector(".sun");
+        anims.push(sun.animate([{ transform: "translateY(0)" }, { transform: "translateY(40px)" }], { duration: T(3200), fill: "forwards", easing: "ease-in" }));
+        await Promise.all([
+          move(white, [{ transform: "none" }, { transform: "translateX(14px) rotate(5deg)" }], 700),
+          move(grey, [{ transform: "none" }, { transform: "translateX(-14px) rotate(-5deg)" }], 700),
+        ]);
+        const t = text("きれい… (красиво)", 140, 34, 22);
+        pop(t);
+        await wait(2000);
+        hearts(140, 110, 4);
+        await wait(700);
+        fadeOut(t);
+        await fadeOut(bg, 700);
+      },
+    },
+    {
+      name: "Чайная церемония",
+      async run() {
+        const b1 = prop(SVG.matcha, 86, 146, 44, 3);
+        const b2 = prop(SVG.matcha, 150, 146, 44, 3);
+        const w = prop(SVG.whisk, 131, 112, 18, 4);
+        await Promise.all([pop(b1), pop(b2), wait(200).then(() => pop(w))]);
+        await move(w, [{ transform: "rotate(-14deg)" }, { transform: "rotate(14deg)" }], 160, { iterations: 8, direction: "alternate" });
+        await fadeOut(w, 250);
+        box.querySelectorAll(".steam").forEach(s => anims.push(s.animate([{ transform: "translateY(0)", opacity: .6 }, { transform: "translateY(-8px)", opacity: 0 }], { duration: T(1100), iterations: 3 })));
+        // a polite bow to each other, then a sip
+        await Promise.all([
+          move(white, [{ transform: "none" }, { transform: "rotate(12deg) translateY(4px)" }, { transform: "none" }], 900),
+          move(grey, [{ transform: "none" }, { transform: "rotate(-12deg) translateY(4px)" }, { transform: "none" }], 900),
+        ]);
+        await Promise.all([
+          move(white, [{ transform: "none" }, { transform: "rotate(-5deg) translateY(-3px)" }, { transform: "none" }], 800),
+          move(grey, [{ transform: "none" }, { transform: "rotate(5deg) translateY(-3px)" }, { transform: "none" }], 800),
+        ]);
+        hearts(140, 110, 5);
+        await wait(700);
+        await Promise.all([fadeOut(b1), fadeOut(b2)]);
+      },
+    },
+    {
+      name: "Японские фонарики",
+      async run() {
+        const night = prop("", -14, -14, 308, 0, "night");
+        const rope = prop(`<svg viewBox="0 0 280 30"><path d="M0 4 Q140 34 280 4" stroke="var(--ink)" stroke-width="2" fill="none"/></svg>`, 0, -6, 280, 1);
+        const colors = ["#f7a6a6", "#fbd38a", "#f6a6c1"];
+        const lanterns = [44, 118, 196].map((x, i) => prop(SVG.lantern(colors[i]), x, i === 1 ? 8 : 2, 34, 1, "lantern-glow"));
+        await Promise.all([night, rope, ...lanterns].map(e => move(e, [{ opacity: 0 }, { opacity: 1 }], 700)));
+        lanterns.forEach((l, i) => {
+          l.style.transformOrigin = "50% 0";
+          anims.push(l.animate([{ transform: "rotate(-6deg)" }, { transform: "rotate(6deg)" }], { duration: T(1300 + i * 200), iterations: Infinity, direction: "alternate", easing: "ease-in-out" }));
+        });
+        move(white, [{ transform: "none" }, { transform: "rotate(-7deg) translateX(8px)" }], 600);
+        await move(grey, [{ transform: "none" }, { transform: "rotate(7deg) translateX(-8px)" }], 600);
+        await wait(2400);
+        hearts(140, 100, 5);
+        await wait(700);
+        await Promise.all([night, rope, ...lanterns].map(e => fadeOut(e, 600)));
+      },
+    },
   ];
 
   function nextScene() {
@@ -285,10 +441,9 @@ export function initScenes(box, caption) {
     return SCENES[queue.pop()];
   }
 
-  async function play() {
+  async function play(scene = nextScene()) {
     if (busy) return;
     busy = true;
-    const scene = nextScene();
     caption.textContent = scene.name;
     try {
       await scene.run();
@@ -306,6 +461,7 @@ export function initScenes(box, caption) {
   box.setAttribute("tabindex", "0");
   box.setAttribute("aria-label", "Котики. Нажми, чтобы увидеть сценку");
   box.removeAttribute("aria-hidden");
-  box.addEventListener("click", play);
+  box.addEventListener("click", () => play());
+  box.playScene = name => play(SCENES.find(s => s.name === name)); // handy for checking a scene from the console
   box.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); play(); } });
 }

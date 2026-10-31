@@ -10,7 +10,7 @@ const ENGINES = { quiz, deck, form };
 const $ = id => document.getElementById(id);
 const views = { invite: $("invite"), hub: $("hub"), play: $("play") };
 
-/* ---------- unlocking by secret word ---------- */
+/* ---------- unlocking by a question about us ---------- */
 const KEY = "kotik.unlocked";
 const norm = w => w.toLowerCase().replace(/ё/g, "е").replace(/[^a-zа-я0-9]/g, "");
 function unlockedIds() {
@@ -20,7 +20,12 @@ function markUnlocked(id) {
   try { localStorage.setItem(KEY, JSON.stringify([...new Set([...unlockedIds(), id])])); } catch (e) {}
 }
 const sessionUnlocked = new Set(); // keeps working when storage is blocked
-const isOpen = s => !s.word || sessionUnlocked.has(s.id) || unlockedIds().includes(s.id);
+const isOpen = s => !s.unlock || sessionUnlocked.has(s.id) || unlockedIds().includes(s.id);
+// any answer counts while the list is empty; otherwise the answer has to contain one of the variants
+function accepts(s, value) {
+  const v = norm(value), variants = (s.unlock.answers || []).map(norm).filter(Boolean);
+  return !!v && (!variants.length || variants.some(a => v.includes(a)));
+}
 
 /* ---------- messages to Telegram ---------- */
 function describe(s, data) {
@@ -55,7 +60,7 @@ function renderHub() {
         <span class="pill">${open ? "открыто" : "закрыто"}</span>
       </button>`;
     li.querySelector("b").textContent = s.title;
-    li.querySelector("small").textContent = open ? s.desc : "Котик откроет его, когда услышит секретное слово";
+    li.querySelector("small").textContent = open ? s.desc : "Ответь на вопрос, и котик откроет этап";
     li.querySelector("button").addEventListener("click", () => { location.hash = "stage-" + s.id; });
     if (!open) li.appendChild(unlockForm(s));
     list.appendChild(li);
@@ -66,21 +71,24 @@ function unlockForm(s) {
   const f = document.createElement("form");
   f.className = "unlock";
   f.innerHTML = `
-    <label class="sr" for="w-${s.id}">Секретное слово для этапа «${s.title}»</label>
-    <input id="w-${s.id}" type="text" placeholder="секретное слово" autocomplete="off" autocapitalize="none" enterkeyhint="go">
+    <label class="unlock-q" for="w-${s.id}"></label>
+    <input id="w-${s.id}" type="text" placeholder="твой ответ" autocomplete="off" enterkeyhint="go">
     <button class="btn yes" type="submit">Открыть</button>
     <p class="note" aria-live="polite"></p>`;
+  f.querySelector(".unlock-q").textContent = s.unlock.q;
   f.addEventListener("submit", e => {
     e.preventDefault();
     const input = f.querySelector("input");
-    if (norm(input.value) && norm(input.value) === norm(s.word)) {
+    if (accepts(s, input.value)) {
       sessionUnlocked.add(s.id);
       markUnlocked(s.id);
-      send(`🔓 Она открыла этап «${s.title}»`);
+      send(`🔓 Она открыла этап «${s.title}»
+${s.unlock.q}
+Её ответ: ${input.value.trim()}`);
       renderHub();
       hearts($("stageList"));
     } else {
-      f.querySelector(".note").textContent = "Котик не знает такого слова";
+      f.querySelector(".note").textContent = "Котик помнит иначе. Попробуй ещё раз";
       input.classList.remove("shake"); input.offsetWidth; input.classList.add("shake");
     }
   });

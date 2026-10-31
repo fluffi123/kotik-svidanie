@@ -239,3 +239,6 @@ textarea::placeholder { color: var(--ink); opacity: .4; }
 .scene-prop.shooting { height: 3px; border-radius: 3px; background: linear-gradient(90deg, transparent, #fff7c9); }
 .scene-prop.flash { height: 208px; border-radius: 26px; background: #fff; }
 .scene-caption { text-align: center; margin: 4px 0 0; font-family: var(--f-hand); font-size: 24px; font-weight: 700; min-height: 1.2em; }
+.unlock-q { grid-column: 1 / -1; font-family: var(--f-hand); font-size: 22px; font-weight: 700; line-height: 1.15; padding-left: 8px; }
+.hub-cats.blushing .mini-cat:first-child ellipse[fill="var(--blush)"] { opacity: 1; transform-box: fill-box; transform-origin: center; transform: scale(1.4); transition: transform .3s; }
+.lantern-glow { filter: drop-shadow(0 0 8px #ffd27a); }
