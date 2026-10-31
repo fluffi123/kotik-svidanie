@@ -53,34 +53,69 @@ const SVG = {
       <path d="M15 52 L25 76 L35 52" stroke="var(--lilac-d)" stroke-width="2" fill="none" opacity=".6"/>
       <path d="M25 58 q-10 -8 -11 0 q1 5 11 0 q10 5 11 0 q-1 -8 -11 0 M25 58 l-4 9 M25 58 l4 9" fill="var(--pink)" stroke="var(--ink)" stroke-width="1.8"/></svg>`;
   })(),
-  sakuraBranch: (() => {
-    const flower = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">${[0, 72, 144, 216, 288].map(a =>
-      `<ellipse cx="0" cy="-5" rx="3.6" ry="5" fill="#fbd0dc" stroke="#e48fab" stroke-width=".9" transform="rotate(${a})"/>`).join("")}<circle r="1.8" fill="#f3c64e"/></g>`;
-    return `<svg viewBox="0 0 130 70">
-      <path d="M130 6 Q92 14 70 30 Q48 46 8 50 M88 20 Q84 6 74 2 M60 36 Q58 54 48 64" stroke="#8a5a44" stroke-width="5" fill="none" stroke-linecap="round"/>
-      ${flower(112, 12)}${flower(92, 26, .9)}${flower(74, 6, .8)}${flower(66, 38)}${flower(44, 48, .9)}${flower(50, 62, .8)}${flower(20, 50, .8)}</svg>`;
+  ramen: `<svg viewBox="0 0 64 44">
+    <path class="steam" d="M22 8 q-4 -4 0 -8 M32 8 q-4 -4 0 -8 M42 8 q-4 -4 0 -8" stroke="var(--ink)" stroke-width="2" fill="none" stroke-linecap="round" opacity=".45"/>
+    <path d="M3 14 Q32 52 61 14 Z" fill="#f7a6a6" stroke="var(--ink)" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M14 26 q4 3 8 0 q4 3 8 0 q4 3 8 0 q4 3 8 0" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/>
+    <ellipse cx="32" cy="14" rx="29" ry="6" fill="#f6d38a" stroke="var(--ink)" stroke-width="2.2"/>
+    <path d="M12 13 q3 -3 6 0 q3 3 6 0 q3 -3 6 0 M30 15 q3 -3 6 0 q3 3 6 0" stroke="#f3e2a9" stroke-width="2.4" fill="none"/>
+    <ellipse cx="44" cy="12" rx="6" ry="4" fill="#fff" stroke="var(--ink)" stroke-width="1.4"/><circle cx="44" cy="12" r="2.4" fill="#f3b23e"/>
+    <circle cx="22" cy="12" r="4" fill="#fff" stroke="var(--ink)" stroke-width="1.2"/><path d="M20 12 a2 2 0 1 1 2 2" stroke="#f08ab0" stroke-width="1.4" fill="none"/>
+    <rect x="30" y="6" width="6" height="9" rx="1" fill="#4c6b4a" transform="rotate(-12 33 10)"/></svg>`,
+  chopsticks: `<svg viewBox="0 0 40 40"><path d="M2 38 L36 4 M8 39 L39 10" stroke="#c9a96a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M18 24 q-3 5 0 10 q3 5 0 10 M23 22 q-3 5 0 10 q3 5 0 10" stroke="#f3e2a9" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`,
+  torii: (() => {
+    const gate = (cx, w, h, y0) => {
+      const post = w * 0.07, top = y0, l = cx - w / 2, r = cx + w / 2;
+      return `<g>
+        <rect x="${l + w * 0.12}" y="${top + h * 0.12}" width="${post}" height="${h * 0.88}" fill="#f08a6f" stroke="var(--ink)" stroke-width="2"/>
+        <rect x="${r - w * 0.12 - post}" y="${top + h * 0.12}" width="${post}" height="${h * 0.88}" fill="#f08a6f" stroke="var(--ink)" stroke-width="2"/>
+        <rect x="${l + w * 0.06}" y="${top + h * 0.26}" width="${w * 0.88}" height="${h * 0.06}" fill="#f08a6f" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M${l} ${top + h * 0.06} Q${cx} ${top + h * 0.12} ${r} ${top + h * 0.06} L${r - w * 0.03} ${top + h * 0.15} Q${cx} ${top + h * 0.2} ${l + w * 0.03} ${top + h * 0.15} Z" fill="var(--ink)"/>
+      </g>`;
+    };
+    return `<svg viewBox="0 0 308 208">
+      <defs><clipPath id="toriiClip"><rect width="308" height="208" rx="26"/></clipPath></defs>
+      <g clip-path="url(#toriiClip)">
+        <rect width="308" height="208" fill="#cfe7d4"/>
+        <path d="M110 208 L146 100 L162 100 L198 208 Z" fill="#e9dcc6"/>
+        ${gate(154, 70, 70, 74)}${gate(154, 110, 100, 56)}${gate(154, 170, 150, 30)}${gate(154, 270, 220, 0)}
+      </g></svg>`;
   })(),
-  petal: `<svg viewBox="0 0 12 10"><path d="M6 9 C0 6 1 1 4 1 C5 1 6 2 6 3 C6 2 7 1 8 1 C11 1 12 6 6 9Z" fill="#fbd0dc" stroke="#e48fab" stroke-width=".8"/></svg>`,
-  fuji: `<svg viewBox="0 0 308 208">
-    <defs><linearGradient id="fujiSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9c4"/><stop offset="1" stop-color="#f7b7cf"/></linearGradient>
-    <clipPath id="fujiClip"><rect width="308" height="208" rx="26"/></clipPath></defs>
-    <g clip-path="url(#fujiClip)">
-      <rect width="308" height="208" fill="url(#fujiSky)"/>
-      <circle class="sun" cx="236" cy="78" r="26" fill="#ff9fae" opacity=".85"/>
-      <path d="M40 60 h40 M56 52 h30 M200 40 h36" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"/>
-      <path d="M-10 196 L118 74 Q140 60 162 74 L320 196 Z" fill="var(--lilac-d)" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/>
-      <path d="M118 74 Q140 60 162 74 L152 90 L144 82 L136 94 L128 82 Z" fill="#fff" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>
-      <path d="M150 34 l6 4 l6 -4 M170 26 l5 3 l5 -3" stroke="var(--ink)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  deer: `<svg viewBox="0 0 74 84">
+    <path d="M18 60 v20 M28 62 v19 M50 62 v19 M60 60 v20" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M18 60 v20 M28 62 v19 M50 62 v19 M60 60 v20" stroke="#d9a877" stroke-width="2.6" stroke-linecap="round"/>
+    <ellipse cx="40" cy="52" rx="28" ry="16" fill="#d9a877" stroke="var(--ink)" stroke-width="2.6"/>
+    <circle cx="30" cy="48" r="2.2" fill="#fff"/><circle cx="40" cy="45" r="2" fill="#fff"/><circle cx="48" cy="50" r="2.2" fill="#fff"/>
+    <path d="M14 38 L10 24 L20 32 Z M28 32 L34 20 L34 34 Z" fill="#d9a877" stroke="var(--ink)" stroke-width="2.2" stroke-linejoin="round"/>
+    <ellipse cx="20" cy="40" rx="13" ry="12" fill="#d9a877" stroke="var(--ink)" stroke-width="2.6"/>
+    <ellipse cx="11" cy="45" rx="6" ry="4.5" fill="#f3e2c9" stroke="var(--ink)" stroke-width="1.8"/>
+    <circle cx="8" cy="44" r="1.6" fill="var(--ink)"/>
+    <circle cx="18" cy="37" r="2.2" fill="var(--ink)"/><circle cx="18.7" cy="36.3" r=".7" fill="#fff"/>
+    <ellipse cx="24" cy="44" rx="3" ry="1.8" fill="var(--blush)" opacity=".8"/></svg>`,
+  senbei: `<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8.5" fill="#e8c27e" stroke="var(--ink)" stroke-width="1.8"/><circle cx="7" cy="8" r="1" fill="#b98a46"/><circle cx="12" cy="12" r="1" fill="#b98a46"/></svg>`,
+  coaster: `<svg viewBox="0 0 308 208">
+    <defs><clipPath id="coasterClip"><rect width="308" height="208" rx="26"/></clipPath></defs>
+    <g clip-path="url(#coasterClip)">
+      <rect width="308" height="208" fill="#d7ecfa"/>
+      <circle cx="60" cy="40" r="10" fill="#fff" opacity=".8"/><circle cx="74" cy="40" r="13" fill="#fff" opacity=".8"/><circle cx="88" cy="42" r="9" fill="#fff" opacity=".8"/>
+      <path d="M60 196 V112 M120 196 V48 M180 196 V150 M236 196 V96 M280 196 V70" stroke="var(--lilac-d)" stroke-width="4"/>
+      <path class="track" d="M-6 186 C40 186 70 46 120 46 C170 46 150 150 196 150 C236 150 240 92 270 72 C290 60 300 66 320 66" stroke="var(--ink)" stroke-width="5" fill="none"/>
+      <path d="M-6 186 C40 186 70 46 120 46 C170 46 150 150 196 150 C236 150 240 92 270 72 C290 60 300 66 320 66" stroke="#f6a6c1" stroke-width="2" fill="none" stroke-dasharray="6 6"/>
     </g></svg>`,
-  matcha: `<svg viewBox="0 0 52 34">
-    <path class="steam" d="M20 6 q-4 -4 0 -8 M32 6 q-4 -4 0 -8" stroke="#8fbf6f" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".6"/>
-    <path d="M3 10 Q26 44 49 10 Z" fill="#f3e6cf" stroke="var(--ink)" stroke-width="2.6" stroke-linejoin="round"/>
-    <ellipse cx="26" cy="10" rx="23" ry="4.5" fill="#9ccc7a" stroke="var(--ink)" stroke-width="2.2"/>
-    <circle cx="20" cy="10" r="1.2" fill="#d9f0c4"/><circle cx="30" cy="9" r="1.5" fill="#d9f0c4"/>
-    <path d="M10 20 q16 8 32 0" stroke="#e48fab" stroke-width="2" fill="none" opacity=".7"/></svg>`,
-  whisk: `<svg viewBox="0 0 20 46"><rect x="7" y="0" width="6" height="20" rx="2" fill="#e8cf9a" stroke="var(--ink)" stroke-width="2"/>
-    <path d="M10 20 Q2 30 4 44 M10 20 Q7 32 8 45 M10 20 Q13 32 12 45 M10 20 Q18 30 16 44" stroke="#c9a96a" stroke-width="2" fill="none"/>
-    <path d="M3 44 Q10 47 17 44" stroke="var(--ink)" stroke-width="2" fill="none"/></svg>`,
+  cart: `<svg viewBox="0 0 50 36" overflow="visible">
+    <path d="M10 6 l-4 -8 M40 6 l4 -8" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/>
+    <circle cx="16" cy="12" r="8" fill="#fff" stroke="var(--ink)" stroke-width="2"/><path d="M10 7 l1 -6 l5 4 M17 5 l5 -4 l1 6" fill="#fff" stroke="var(--ink)" stroke-width="1.6" stroke-linejoin="round"/>
+    <circle cx="34" cy="12" r="8" fill="var(--grey-cat)" stroke="var(--ink)" stroke-width="2"/><path d="M28 7 l1 -6 l5 4 M35 5 l5 -4 l1 6" fill="var(--grey-cat)" stroke="var(--ink)" stroke-width="1.6" stroke-linejoin="round"/>
+    <ellipse cx="16" cy="15" rx="2" ry="2.6" fill="var(--ink)"/><ellipse cx="34" cy="15" rx="2" ry="2.6" fill="var(--ink)"/>
+    <rect x="2" y="16" width="46" height="14" rx="5" fill="var(--pink-d)" stroke="var(--ink)" stroke-width="2.4"/>
+    <circle cx="12" cy="31" r="4" fill="var(--ink)"/><circle cx="38" cy="31" r="4" fill="var(--ink)"/></svg>`,
+  shinkansen: `<svg viewBox="0 0 210 44">
+    <path d="M8 38 L170 38 Q206 38 206 30 Q200 10 150 8 L8 8 Q2 8 2 14 V32 Q2 38 8 38 Z" fill="#fff" stroke="var(--ink)" stroke-width="2.6"/>
+    <path d="M2 28 H196 Q203 30 205 32" stroke="#6b8fd6" stroke-width="5" fill="none"/>
+    <path d="M2 33 H170" stroke="#6b8fd6" stroke-width="2" fill="none"/>
+    ${[14, 34, 54, 74, 94, 114, 134].map(x => `<rect x="${x}" y="14" width="13" height="8" rx="2" fill="#bcd6f2" stroke="var(--ink)" stroke-width="1.4"/>`).join("")}
+    <path d="M154 14 Q176 14 186 22 L154 22 Z" fill="#bcd6f2" stroke="var(--ink)" stroke-width="1.4"/></svg>`,
   lantern: color => `<svg viewBox="0 0 30 50">
     <rect x="9" y="4" width="12" height="5" rx="1.5" fill="var(--ink)"/>
     <ellipse cx="15" cy="24" rx="13" ry="15" fill="${color}" stroke="var(--ink)" stroke-width="2.4"/>
@@ -349,73 +384,156 @@ export function initScenes(box, caption) {
       },
     },
     {
-      name: "Ханами",
+      name: "Рамен",
       async run() {
-        const branch = prop(SVG.sakuraBranch, 160, -18, 130, 1);
-        await move(branch, [{ opacity: 0, transform: "translateX(30px)" }, { opacity: 1, transform: "none" }], 600);
-        branch.style.transformOrigin = "100% 0";
-        anims.push(branch.animate([{ transform: "rotate(0)" }, { transform: "rotate(2deg)" }, { transform: "rotate(0)" }], { duration: T(1800), iterations: 3 }));
-        move(white, [{ transform: "none" }, { transform: "rotate(-6deg) translateX(6px)" }], 600);
-        move(grey, [{ transform: "none" }, { transform: "rotate(6deg) translateX(-6px)" }], 600);
-        for (let i = 0; i < 22; i++) {
-          const x = 20 + Math.random() * 260, drift = (Math.random() - .3) * -90;
-          const p = prop(SVG.petal, x, -10, 10 + Math.random() * 6, 3);
-          move(p, [{ transform: "translate(0,0) rotate(0)", opacity: 0 }, { opacity: 1, offset: .1 },
-                   { transform: `translate(${drift}px, 195px) rotate(${360 + Math.random() * 360}deg)`, opacity: .9 }],
-            2200 + Math.random() * 1400, { delay: Math.random() * 1800, easing: "ease-in" }).then(() => p.remove());
+        const r1 = prop(SVG.ramen, 78, 136, 52, 3);
+        const r2 = prop(SVG.ramen, 150, 136, 52, 3);
+        await Promise.all([pop(r1), wait(150).then(() => pop(r2))]);
+        box.querySelectorAll(".steam").forEach(s => anims.push(s.animate([{ transform: "translateY(0)", opacity: .6 }, { transform: "translateY(-8px)", opacity: 0 }], { duration: T(1000), iterations: 4 })));
+        const c1 = prop(SVG.chopsticks, 96, 104, 30, 4);
+        const c2 = prop(SVG.chopsticks, 154, 104, 30, 4);
+        c2.firstElementChild.style.transform = "scaleX(-1)";
+        await Promise.all([pop(c1), pop(c2)]);
+        const slurp = text("ズルズル…", 140, 54, 22);
+        pop(slurp);
+        for (let i = 0; i < 2; i++) {
+          await Promise.all([
+            move(c1, [{ transform: "none" }, { transform: "translateY(-16px) rotate(-8deg)" }, { transform: "none" }], 650),
+            move(white, [{ transform: "none" }, { transform: "rotate(-5deg) translateY(-3px)" }, { transform: "none" }], 650),
+          ]);
+          await Promise.all([
+            move(c2, [{ transform: "none" }, { transform: "translateY(-16px) rotate(8deg)" }, { transform: "none" }], 650),
+            move(grey, [{ transform: "none" }, { transform: "rotate(5deg) translateY(-3px)" }, { transform: "none" }], 650),
+          ]);
         }
-        await wait(3400);
-        hearts(140, 100, 5);
-        await wait(500);
-        await fadeOut(branch);
-      },
-    },
-    {
-      name: "Закат у Фудзи",
-      async run() {
-        const bg = prop(SVG.fuji, -14, -14, 308, 0);
-        await move(bg, [{ opacity: 0 }, { opacity: 1 }], 800);
-        const sun = bg.querySelector(".sun");
-        anims.push(sun.animate([{ transform: "translateY(0)" }, { transform: "translateY(40px)" }], { duration: T(3200), fill: "forwards", easing: "ease-in" }));
-        await Promise.all([
-          move(white, [{ transform: "none" }, { transform: "translateX(14px) rotate(5deg)" }], 700),
-          move(grey, [{ transform: "none" }, { transform: "translateX(-14px) rotate(-5deg)" }], 700),
-        ]);
-        const t = text("きれい… (красиво)", 140, 34, 22);
-        pop(t);
-        await wait(2000);
-        hearts(140, 110, 4);
-        await wait(700);
-        fadeOut(t);
-        await fadeOut(bg, 700);
-      },
-    },
-    {
-      name: "Чайная церемония",
-      async run() {
-        const b1 = prop(SVG.matcha, 86, 146, 44, 3);
-        const b2 = prop(SVG.matcha, 150, 146, 44, 3);
-        const w = prop(SVG.whisk, 131, 112, 18, 4);
-        await Promise.all([pop(b1), pop(b2), wait(200).then(() => pop(w))]);
-        await move(w, [{ transform: "rotate(-14deg)" }, { transform: "rotate(14deg)" }], 160, { iterations: 8, direction: "alternate" });
-        await fadeOut(w, 250);
-        box.querySelectorAll(".steam").forEach(s => anims.push(s.animate([{ transform: "translateY(0)", opacity: .6 }, { transform: "translateY(-8px)", opacity: 0 }], { duration: T(1100), iterations: 3 })));
-        // a polite bow to each other, then a sip
-        await Promise.all([
-          move(white, [{ transform: "none" }, { transform: "rotate(12deg) translateY(4px)" }, { transform: "none" }], 900),
-          move(grey, [{ transform: "none" }, { transform: "rotate(-12deg) translateY(4px)" }, { transform: "none" }], 900),
-        ]);
-        await Promise.all([
-          move(white, [{ transform: "none" }, { transform: "rotate(-5deg) translateY(-3px)" }, { transform: "none" }], 800),
-          move(grey, [{ transform: "none" }, { transform: "rotate(5deg) translateY(-3px)" }, { transform: "none" }], 800),
-        ]);
+        slurp.remove();
+        const yum = text("вкусно!", 140, 54, 26);
+        pop(yum);
         hearts(140, 110, 5);
-        await wait(700);
-        await Promise.all([fadeOut(b1), fadeOut(b2)]);
+        await wait(1000);
+        fadeOut(yum);
+        await Promise.all([r1, r2, c1, c2].map(e => fadeOut(e)));
       },
     },
     {
-      name: "Японские фонарики",
+      name: "Храмы Киото",
+      async run() {
+        const bg = prop(SVG.torii, -14, -14, 308, 0);
+        await move(bg, [{ opacity: 0 }, { opacity: 1 }], 700);
+        const gates = bg.firstElementChild;
+        gates.style.transformOrigin = "50% 55%";
+        anims.push(gates.animate([{ transform: "scale(1)" }, { transform: "scale(1.15)" }], { duration: T(2600), fill: "forwards", easing: "ease-in-out" }));
+        box.classList.add("walking");
+        await wait(2600);
+        box.classList.remove("walking");
+        // bow, bow, clap
+        for (let i = 0; i < 2; i++) {
+          await Promise.all([
+            move(white, [{ transform: "none" }, { transform: "rotate(14deg) translateY(4px)" }, { transform: "none" }], 700),
+            move(grey, [{ transform: "none" }, { transform: "rotate(-14deg) translateY(4px)" }, { transform: "none" }], 700),
+          ]);
+        }
+        const clap = text("хлоп-хлоп", 140, 40, 24);
+        pop(clap);
+        await wait(700);
+        hearts(140, 100, 5);
+        await wait(700);
+        fadeOut(clap);
+        await fadeOut(bg, 600);
+      },
+    },
+    {
+      name: "Олени Нары",
+      async run() {
+        move(grey, [{ transform: "none" }, { transform: "translateX(-36px)" }], 700);
+        const deer = prop(SVG.deer, 300, 66, 94, 3);
+        deer.style.transformOrigin = "30% 100%";
+        await move(deer, [{ transform: "translateX(0)" }, { transform: "translateX(-90px) translateY(-4px)", offset: .5 }, { transform: "translateX(-92px)" }], 1200);
+        const hi = text("поклон!", 236, 48, 22);
+        pop(hi);
+        // the deer bows, the cats bow back
+        await move(deer, [{ transform: "translateX(-92px)" }, { transform: "translateX(-92px) rotate(-16deg)" }, { transform: "translateX(-92px)" }], 800);
+        await Promise.all([
+          move(white, [{ transform: "none" }, { transform: "rotate(12deg)" }, { transform: "none" }], 700),
+          move(grey, [{ transform: "translateX(-36px)" }, { transform: "translateX(-36px) rotate(12deg)" }, { transform: "translateX(-36px)" }], 700),
+        ]);
+        hi.remove();
+        // the white cat shares a deer cracker
+        const s = prop(SVG.senbei, 98, 118, 18, 5);
+        await pop(s, 300);
+        await move(s, [{ transform: "none" }, { transform: "translate(60px, -40px) rotate(180deg)" }, { transform: "translate(118px, 4px) rotate(360deg)" }], 800, { easing: "ease-out" });
+        s.remove();
+        const munch = text("ням", 236, 56, 22);
+        pop(munch);
+        await move(deer, [{ transform: "translateX(-92px)" }, { transform: "translateX(-92px) scale(1.04, .96)" }, { transform: "translateX(-92px)" }], 300, { iterations: 3 });
+        hearts(232, 100, 5);
+        await wait(600);
+        munch.remove();
+        await move(deer, [{ transform: "translateX(-92px)" }, { transform: "translateX(20px)", opacity: 0 }], 800);
+        deer.remove();
+      },
+    },
+    {
+      name: "Юниверсал в Осаке",
+      async run() {
+        const bg = prop(SVG.coaster, -14, -14, 308, 0);
+        await move(bg, [{ opacity: 0 }, { opacity: 1 }], 700);
+        const track = bg.querySelector(".track"), len = track.getTotalLength();
+        const cart = prop(SVG.cart, 0, 0, 40, 1);
+        const frames = [];
+        for (let i = 0; i <= 48; i++) {
+          const d = len * i / 48, a = track.getPointAtLength(d), b = track.getPointAtLength(Math.min(len, d + 2));
+          const ang = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+          frames.push({ transform: `translate(${a.x - 14 - 20}px, ${a.y - 14 - 26}px) rotate(${ang}deg)` });
+        }
+        const scream = text("А-а-а-а!", 140, 20, 26);
+        pop(scream);
+        const ride = move(cart, frames, 2800, { easing: "ease-in-out" });
+        for (let i = 0; i < 3; i++) {
+          await Promise.all([
+            move(white, [{ transform: "none" }, { transform: "translateY(-14px) rotate(-6deg)" }, { transform: "none" }], 450, { easing: "ease-out" }),
+            move(grey, [{ transform: "none" }, { transform: "translateY(-14px) rotate(6deg)" }, { transform: "none" }], 450, { easing: "ease-out" }),
+          ]);
+          await wait(300);
+        }
+        await ride;
+        scream.remove();
+        cart.remove();
+        const again = text("ещё раз!", 140, 40, 26);
+        pop(again);
+        hearts(140, 100, 6);
+        await wait(1000);
+        fadeOut(again);
+        await fadeOut(bg, 600);
+      },
+    },
+    {
+      name: "Наше путешествие",
+      async run() {
+        const train = prop(SVG.shinkansen, -220, 52, 200, 1);
+        await move(train, [{ transform: "translateX(0)" }, { transform: "translateX(560px)" }], 1500, { easing: "cubic-bezier(.5,0,.5,1)" });
+        train.remove();
+        const cities = [["Осака", 48, 46], ["Нара", 112, 26], ["Киото", 166, 48], ["Токио", 238, 30]]; // our route, west to east
+        const route = prop(`<svg viewBox="0 0 280 70" overflow="visible">
+          <path d="${cities.map(([, x, y], i) => (i ? "L" : "M") + x + " " + y).join(" ")}" stroke="var(--ink)" stroke-width="2.4" stroke-dasharray="5 6" fill="none" opacity=".6"/>
+          ${cities.map(([name, x, y]) => `<g class="pin" style="opacity:0;transform-box:fill-box;transform-origin:50% 100%">
+            <path d="M${x} ${y} c-7 -9 -7 -17 0 -17 c7 0 7 8 0 17z" fill="var(--pink-d)" stroke="var(--ink)" stroke-width="2"/>
+            <text x="${x}" y="${y + 18}" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="18" fill="var(--ink)">${name}</text></g>`).join("")}
+        </svg>`, 0, 0, 280, 1);
+        for (const pin of route.querySelectorAll(".pin")) {
+          await move(pin, [{ opacity: 0, transform: "translateY(-12px) scale(.5)" }, { opacity: 1, transform: "none" }], 420, { easing: "ease-out" });
+        }
+        await Promise.all([
+          move(white, [{ transform: "none" }, { transform: "translateY(-12px)" }, { transform: "none" }], 500, { iterations: 2 }),
+          move(grey, [{ transform: "none" }, { transform: "translateY(-12px)" }, { transform: "none" }], 500, { iterations: 2, delay: 150 }),
+        ]);
+        hearts(140, 100, 6);
+        await wait(1200);
+        await fadeOut(route, 600);
+      },
+    },
+    {
+      name: "Вечер в Осаке",
       async run() {
         const night = prop("", -14, -14, 308, 0, "night");
         const rope = prop(`<svg viewBox="0 0 280 30"><path d="M0 4 Q140 34 280 4" stroke="var(--ink)" stroke-width="2" fill="none"/></svg>`, 0, -6, 280, 1);
