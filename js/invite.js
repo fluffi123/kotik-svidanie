@@ -264,11 +264,53 @@ export function initInvite({ sendLetter, goHub }) {
       { duration: 600, easing: "cubic-bezier(.5,0,.6,1)" });
     env.hidden = true;
     cat.carry.style.visibility = "";
+    await wait(300);
+    await kissScreen();
     speak("Очень важный котик несёт очень важное письмо");
     await wait(300);
 
     await cat.walkTo(Math.max(W() * 0.2, 30), 130);
     await trip();
+  }
+
+  // the cat puts the letter down, comes right up to the glass, kisses it and picks the letter up again
+  async function kissScreen() {
+    speak("Подожди, сначала самое важное…");
+    const cr = rectIn(cat.carry);
+    const mx = cr.x + cr.w / 2, my = cr.y + cr.h / 2;
+    const env = document.createElement("div");
+    env.className = "flyenv"; env.innerHTML = $("tplEnv").innerHTML;
+    env.style.width = cr.w + "px"; env.style.left = cr.x + "px"; env.style.top = cr.y + "px";
+    cat.hold(null);
+    stage.appendChild(env);
+    const ground = stage.clientHeight - 10 - cr.h - cr.y;
+    await play(env, [{ transform: "none" }, { transform: `translate(${-cat.w * 0.4}px, ${ground}px) rotate(-12deg)` }], { duration: 450, easing: "ease-in" });
+    await wait(250);
+
+    const body = cat.body, lift = Math.min(120, stage.clientHeight * 0.2), near = `translateY(${-lift}px) scale(2.8)`;
+    body.style.transformOrigin = "74% 58%"; // the face, in the cat's own (unflipped) drawing
+    await play(body, [{ transform: "none" }, { transform: near }], { duration: 850, easing: "cubic-bezier(.4,0,.2,1)" });
+    play(body, [{ transform: near }, { transform: `translateY(${-lift}px) scale(3.1, 2.6)` }, { transform: near }], { duration: 420 });
+    await wait(200);
+    const lips = document.createElement("div");
+    lips.className = "kissmark";
+    lips.innerHTML = `<svg viewBox="0 0 60 34"><g transform="rotate(-10 30 17)" fill="#e8638c" opacity=".85">
+      <path d="M4 16 C10 6 20 2 30 10 C40 2 50 6 56 16 C44 18 16 18 4 16Z"/><path d="M4 17 C16 20 44 20 56 17 C48 30 12 30 4 17Z"/></g></svg>`;
+    lips.style.left = mx - 55 + "px"; lips.style.top = my - lift - 30 + "px";
+    stage.appendChild(lips);
+    speak("Чмок!");
+    play(lips, [{ transform: "scale(.3)", opacity: 0 }, { transform: "scale(1.15)", opacity: 1, offset: .6 }, { transform: "scale(1)", opacity: 1 }], { duration: 350, easing: "ease-out" });
+    burst(mx, my - lift, 14);
+    await wait(900);
+    await play(body, [{ transform: near }, { transform: "none" }], { duration: 700, easing: "ease-in-out" });
+    body.getAnimations().forEach(a => a.cancel());
+    body.style.transformOrigin = "";
+    play(lips, [{ opacity: 1 }, { opacity: 0 }], { duration: 1200, delay: 600 }).then(() => lips.remove());
+
+    const er = rectIn(env);
+    await cat.walkTo(cat.mouthAt(er.x + er.w / 2, "left"), 120);
+    env.remove(); cat.hold("env");
+    await wait(200);
   }
 
   async function trip() {

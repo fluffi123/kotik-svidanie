@@ -242,3 +242,13 @@ textarea::placeholder { color: var(--ink); opacity: .4; }
 .unlock-q { grid-column: 1 / -1; font-family: var(--f-hand); font-size: 22px; font-weight: 700; line-height: 1.15; padding-left: 8px; }
 .hub-cats.blushing .mini-cat:first-child ellipse[fill="var(--blush)"] { opacity: 1; transform-box: fill-box; transform-origin: center; transform: scale(1.4); transition: transform .3s; }
 .lantern-glow { filter: drop-shadow(0 0 8px #ffd27a); }
+.waiting { background: var(--paper); border: 3px dashed var(--lilac-d); border-radius: 20px; padding: 22px 18px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.waiting b { font-family: var(--f-hand); font-size: 28px; }
+.waiting span { line-height: 1.45; text-wrap: balance; }
+.dots { display: flex; gap: 6px; }
+.dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--pink-d); animation: dot 1.2s infinite ease-in-out; }
+.dots i:nth-child(2) { animation-delay: .2s; }
+.dots i:nth-child(3) { animation-delay: .4s; }
+@keyframes dot { 0%, 80%, 100% { transform: scale(.5); opacity: .4; } 40% { transform: scale(1); opacity: 1; } }
+.kissmark { position: absolute; width: 110px; z-index: 8; pointer-events: none; }
+.kissmark svg { width: 100%; display: block; }
