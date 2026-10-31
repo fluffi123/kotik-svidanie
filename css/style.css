@@ -222,3 +222,20 @@ textarea::placeholder { color: var(--ink); opacity: .4; }
 .unlock .btn { padding: 8px 18px; font-size: 16px; }
 .unlock .note { grid-column: 1 / -1; text-align: left; padding-left: 12px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- hub cat scenes ---------- */
+.hub-cats { position: relative; width: 280px; max-width: 100%; height: 180px; margin: 24px auto 0; align-items: flex-end; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.hub-cats:focus-visible { outline: 3px dashed var(--pink-d); outline-offset: 8px; border-radius: 20px; }
+.hub-cats .mini-cat { position: relative; z-index: 2; }
+.hub-cats.sleepy .eye { animation: none; transform: scaleY(.12); }
+.hub-cats.sleepy circle[fill="#fff"] { opacity: 0; }
+.scene-prop { position: absolute; pointer-events: none; }
+.scene-prop svg { display: block; width: 100%; overflow: visible; }
+.scene-text { width: 0; height: 0; overflow: visible; }
+.scene-text span { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-family: var(--f-hand); font-weight: 700; color: var(--ink); }
+.scene-prop.drop { height: 12px; border-radius: 2px; background: #9cc3ea; opacity: .8; }
+.scene-prop.night { height: 208px; border-radius: 26px; background: radial-gradient(circle at 70% 20%, #6c5aa0, #3b3163 70%); }
+.scene-prop.star { height: 4px; border-radius: 50%; background: #fff7c9; box-shadow: 0 0 6px #fff7c9; }
+.scene-prop.shooting { height: 3px; border-radius: 3px; background: linear-gradient(90deg, transparent, #fff7c9); }
+.scene-prop.flash { height: 208px; border-radius: 26px; background: #fff; }
+.scene-caption { text-align: center; margin: 4px 0 0; font-family: var(--f-hand); font-size: 24px; font-weight: 700; min-height: 1.2em; }

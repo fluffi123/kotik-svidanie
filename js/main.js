@@ -4,6 +4,7 @@ import { STAGES, stageById } from "./content.js";
 import * as quiz from "./stages/quiz.js";
 import * as deck from "./stages/deck.js";
 import * as form from "./stages/form.js";
+import { initScenes } from "./scenes.js";
 
 const ENGINES = { quiz, deck, form };
 const $ = id => document.getElementById(id);
@@ -120,6 +121,7 @@ function hearts(root) {
 function drawHubCats() {
   const svg = document.querySelector("#cat .catbody svg").outerHTML;
   $("hubCats").innerHTML = `<div class="mini-cat">${svg}</div><div class="mini-cat grey flipped">${svg}</div>`;
+  initScenes($("hubCats"), $("sceneCaption"));
 }
 
 const invite = initInvite({
