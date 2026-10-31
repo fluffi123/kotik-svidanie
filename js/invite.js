@@ -48,10 +48,10 @@ export function initInvite({ sendLetter, goHub }) {
     return c;
   }
   const cat = makeCat($("cat"));
-  const greyWrap = $("cat").cloneNode(true);
-  greyWrap.removeAttribute("id"); greyWrap.classList.add("grey"); greyWrap.hidden = true;
-  stage.appendChild(greyWrap);
-  const grey = makeCat(greyWrap);
+  const partnerWrap = $("cat").cloneNode(true);
+  partnerWrap.removeAttribute("id"); partnerWrap.classList.remove("grey"); partnerWrap.hidden = true; // the white cat, she appears at the end
+  stage.appendChild(partnerWrap);
+  const partner = makeCat(partnerWrap);
 
   function fitStage(el) {
     stage.style.height = "";
@@ -381,18 +381,18 @@ export function initInvite({ sendLetter, goHub }) {
     const r = rectIn(fin);
     burst(r.x + r.w / 2, r.y + 30, 16);
 
-    // the grey cat now has the letter, the white one (with a plaster) follows
-    cat.hold(null);
-    grey.hold("env");
-    grey.place(-grey.w - 30); grey.el.hidden = false;
+    // the grey courier (with a plaster) comes back with the letter, the white cat walks ahead of him
+    cat.hold("env");
+    partner.hold(null);
+    partner.place(-partner.w - 30); partner.el.hidden = false;
     cat.place(-cat.w * 2 - 50);
     await wait(500);
     const gap = 4, mid = W() / 2;
     await Promise.all([
-      grey.walkTo(mid + gap, 150),
-      cat.walkTo(mid - cat.w - gap, 150 * (mid - cat.w - gap - cat.x) / (mid + gap - grey.x))
+      partner.walkTo(mid + gap, 150),
+      cat.walkTo(mid - cat.w - gap, 150 * (mid - cat.w - gap - cat.x) / (mid + gap - partner.x))
     ]);
-    grey.face("left"); cat.face("right");
+    partner.face("left"); cat.face("right");
     await wait(300);
     burst(mid, stage.clientHeight - cat.el.offsetHeight - 10, 12);
     busy = false;
@@ -426,7 +426,7 @@ export function initInvite({ sendLetter, goHub }) {
     document.querySelectorAll("#ideas .chip").forEach(c => c.classList.remove("added"));
     scratched = false; moves = 0; busy = false;
     cat.el.classList.remove("hurt"); cat.hold(null); cat.place(W() + 40);
-    grey.el.hidden = true; grey.hold(null);
+    partner.el.hidden = true; partner.hold(null);
     say.style.opacity = 1; say.textContent = "Тут кое-что для тебя. Потри карточку";
     paintFoil();
   }
