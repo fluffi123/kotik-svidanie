@@ -213,3 +213,12 @@ textarea::placeholder { color: var(--ink); opacity: .4; }
 .hearts button svg { width: 100%; height: 100%; fill: currentColor; stroke: var(--ink); stroke-width: 1.5; }
 .hearts button.on { color: var(--pink-d); transform: scale(1.1); }
 .burst.fixed { position: fixed; }
+.unlock { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 8px; padding-inline: 4px; }
+.unlock input {
+  min-width: 0; font: 600 16px var(--f-body); color: var(--ink); background: #fff;
+  border: 2px solid var(--lilac-d); border-radius: 999px; padding: 10px 16px;
+}
+.unlock input:focus-visible { outline: 3px dashed var(--pink-d); outline-offset: 2px; }
+.unlock .btn { padding: 8px 18px; font-size: 16px; }
+.unlock .note { grid-column: 1 / -1; text-align: left; padding-left: 12px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

@@ -1,5 +1,5 @@
 import { initInvite } from "./invite.js";
-import { saveAnswer, watchUnlocked, enabled } from "./backend.js";
+import { notify, enabled } from "./backend.js";
 import { STAGES, stageById } from "./content.js";
 import * as quiz from "./stages/quiz.js";
 import * as deck from "./stages/deck.js";
@@ -8,14 +8,38 @@ import * as form from "./stages/form.js";
 const ENGINES = { quiz, deck, form };
 const $ = id => document.getElementById(id);
 const views = { invite: $("invite"), hub: $("hub"), play: $("play") };
-let unlocked = enabled ? {} : null; // null = no backend, everything open
+
+/* ---------- unlocking by secret word ---------- */
+const KEY = "kotik.unlocked";
+const norm = w => w.toLowerCase().replace(/ё/g, "е").replace(/[^a-zа-я0-9]/g, "");
+function unlockedIds() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; }
+}
+function markUnlocked(id) {
+  try { localStorage.setItem(KEY, JSON.stringify([...new Set([...unlockedIds(), id])])); } catch (e) {}
+}
+const sessionUnlocked = new Set(); // keeps working when storage is blocked
+const isOpen = s => !s.word || sessionUnlocked.has(s.id) || unlockedIds().includes(s.id);
+
+/* ---------- messages to Telegram ---------- */
+function describe(s, data) {
+  if (s.type === "quiz") {
+    const lines = data.answers.map(a => `• ${a.q}\n   ${a.a}${a.ok === true ? " ✅" : a.ok === false ? " ❌" : ""}`);
+    return `🧠 ${s.title}\nРезультат: ${data.score} из ${data.total}\n\n${lines.join("\n")}`;
+  }
+  if (s.type === "form") {
+    const lines = s.fields.filter(f => data[f.id] != null).map(f =>
+      `${f.label}\n${f.type === "hearts" ? "❤️".repeat(data[f.id]) + "🤍".repeat(5 - data[f.id]) : data[f.id]}`);
+    return `📝 ${s.title}\n\n${lines.join("\n\n")}`;
+  }
+  return `${s.title}\n${JSON.stringify(data)}`;
+}
+const send = text => notify(text).then(() => true, () => false);
 
 function showView(name) {
   Object.entries(views).forEach(([k, el]) => el.hidden = k !== name);
   scrollTo(0, 0);
 }
-
-const isOpen = s => s.open || unlocked === null || !!unlocked[s.id];
 
 function renderHub() {
   const list = $("stageList");
@@ -27,13 +51,39 @@ function renderHub() {
       <button class="stage-item${open ? "" : " locked"}" type="button" ${open ? "" : "disabled"}>
         <span class="stage-num">${i + 1}</span>
         <span class="stage-text"><b></b><small></small></span>
-        <span class="pill">${open ? "открыто" : "котик спит"}</span>
+        <span class="pill">${open ? "открыто" : "закрыто"}</span>
       </button>`;
     li.querySelector("b").textContent = s.title;
-    li.querySelector("small").textContent = open ? s.desc : "Откроется во время прогулки";
+    li.querySelector("small").textContent = open ? s.desc : "Котик откроет его, когда услышит секретное слово";
     li.querySelector("button").addEventListener("click", () => { location.hash = "stage-" + s.id; });
+    if (!open) li.appendChild(unlockForm(s));
     list.appendChild(li);
   });
+}
+
+function unlockForm(s) {
+  const f = document.createElement("form");
+  f.className = "unlock";
+  f.innerHTML = `
+    <label class="sr" for="w-${s.id}">Секретное слово для этапа «${s.title}»</label>
+    <input id="w-${s.id}" type="text" placeholder="секретное слово" autocomplete="off" autocapitalize="none" enterkeyhint="go">
+    <button class="btn yes" type="submit">Открыть</button>
+    <p class="note" aria-live="polite"></p>`;
+  f.addEventListener("submit", e => {
+    e.preventDefault();
+    const input = f.querySelector("input");
+    if (norm(input.value) && norm(input.value) === norm(s.word)) {
+      sessionUnlocked.add(s.id);
+      markUnlocked(s.id);
+      send(`🔓 Она открыла этап «${s.title}»`);
+      renderHub();
+      hearts($("stageList"));
+    } else {
+      f.querySelector(".note").textContent = "Котик не знает такого слова";
+      input.classList.remove("shake"); input.offsetWidth; input.classList.add("shake");
+    }
+  });
+  return f;
 }
 
 function openStage(id) {
@@ -43,9 +93,8 @@ function openStage(id) {
   const body = $("playBody");
   ENGINES[s.type].render(body, s, {
     back: () => { location.hash = "hub"; },
-    save: data => saveAnswer(s.id, data).then(
-      () => "Котики уже доставили ответ",
-      () => enabled ? "Не получилось отправить, покажи этот экран мне" : ""),
+    save: data => send(describe(s, data)).then(ok =>
+      ok ? "Котики уже доставили ответ" : enabled ? "Не получилось отправить, покажи этот экран мне" : ""),
     celebrate: () => hearts(body),
   });
 }
@@ -74,7 +123,8 @@ function drawHubCats() {
 }
 
 const invite = initInvite({
-  sendLetter: data => saveAnswer("letter", data).then(() => true, () => false),
+  sendLetter: ({ where, wish }) => send(
+    "💌 Письмо от неё\n\n" + [where && "Куда пойдём: " + where, wish && "Пожелания: " + wish].filter(Boolean).join("\n\n")),
   goHub: () => { location.hash = "hub"; },
 });
 
@@ -94,4 +144,3 @@ function route() {
 drawHubCats();
 addEventListener("hashchange", route);
 route();
-watchUnlocked(u => { unlocked = u; if (!views.hub.hidden) renderHub(); });

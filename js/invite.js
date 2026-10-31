@@ -193,7 +193,7 @@ export function initInvite({ sendLetter, goHub }) {
     letter.style.visibility = "";
     const lr = rectIn(letter);
     const sx = pr.x + pr.w / 2 - (lr.x + lr.w / 2), sy = pr.y + pr.h / 2 - (lr.y + lr.h / 2);
-    speak("Напиши, каким хочешь видеть наше свидание");
+    speak("Напиши, какой хочешь видеть нашу прогулку");
     await play(letter, [{ transform: `translate(${sx}px, ${sy}px) scale(.08) rotate(-10deg)`, opacity: .4 },
                         { transform: "translate(0,0) scale(1) rotate(0)", opacity: 1 }],
       { duration: 650, easing: "cubic-bezier(.3,1.4,.5,1)" });

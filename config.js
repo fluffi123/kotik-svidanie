@@ -1,10 +1,8 @@
 // Настройки сайта. Подробности в README.md.
 
-// 1) Firebase: вставь сюда объект firebaseConfig из консоли Firebase
-//    (Project settings → Your apps → Web app → SDK setup and configuration → Config).
-//    Пока здесь null, сайт работает, но ответы никуда не уходят:
-//    в конце письма появится кнопка «Скопировать», а все этапы открыты сразу.
-export const firebaseConfig = null;
-
-// 2) Почта, с которой ты входишь в admin.html. Её же впиши в firestore.rules.
-export const ADMIN_EMAIL = "";
+// Telegram-бот, в который приходят её ответы.
+// Токен выдаёт @BotFather, chat id — твой числовой id (как его узнать, написано в README).
+// Пока поля пустые, сайт работает, но ответы никуда не уходят:
+// в конце письма появится кнопка «Скопировать».
+export const TELEGRAM_BOT_TOKEN = "";
+export const TELEGRAM_CHAT_ID = "";
