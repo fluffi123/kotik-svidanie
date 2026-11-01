@@ -1,5 +1,4 @@
-import { initInvite } from "./invite.js";
-import { notify, readCommand, enabled } from "./backend.js";
+import { notify, enabled } from "./backend.js";
 import { STAGES, stageById } from "./content.js";
 import * as quiz from "./stages/quiz.js";
 import * as deck from "./stages/deck.js";
@@ -9,35 +8,7 @@ import { initScenes } from "./scenes.js";
 
 const ENGINES = { quiz, deck, form, match };
 const $ = id => document.getElementById(id);
-const views = { invite: $("invite"), hub: $("hub"), play: $("play") };
-
-/* ---------- the start signal: you write «поехали» to the bot ---------- */
-const GO = "kotik.go";
-const store = (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} };
-const read = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
-let started = !enabled || read(GO) === "1";
-let polling = null;
-
-async function checkSignal() {
-  let cmd = null;
-  try { cmd = await readCommand(); } catch (e) { return; }
-  const was = started;
-  if (cmd === "go") { started = true; store(GO, "1"); }
-  if (cmd === "stop") { started = false; store(GO, null); store("kotik.goNotified", null); }
-  if (started === was) return;
-  if (started && !read("kotik.goNotified")) {
-    store("kotik.goNotified", "1");
-    send("🚀 Этапы у неё открылись");
-  }
-  if (!views.hub.hidden) { renderHub(); if (started) hearts($("stageList")); }
-  if (!started && !views.play.hidden) location.hash = "hub";
-}
-// polls only while the hub is on screen, so a closed tab costs nothing
-function syncPolling() {
-  const want = enabled && !views.hub.hidden;
-  if (want && !polling) { checkSignal(); polling = setInterval(checkSignal, 4000); }
-  if (!want && polling) { clearInterval(polling); polling = null; }
-}
+const views = { hub: $("hub"), play: $("play") };
 
 /* ---------- unlocking by a question about us ---------- */
 const KEY = "kotik.unlocked";
@@ -78,21 +49,11 @@ const send = text => notify(text).then(() => true, () => false);
 function showView(name) {
   Object.entries(views).forEach(([k, el]) => el.hidden = k !== name);
   scrollTo(0, 0);
-  syncPolling();
 }
 
 function renderHub() {
   const list = $("stageList");
   list.innerHTML = "";
-  if (!started) {
-    list.innerHTML = `
-      <li class="waiting">
-        <b>Котики ждут сигнала</b>
-        <span>Этапы откроются, когда начнётся наше свидание. Не закрывай страницу.</span>
-        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
-      </li>`;
-    return;
-  }
   STAGES.forEach((s, i) => {
     const open = isOpen(s);
     const li = document.createElement("li");
@@ -140,7 +101,7 @@ ${s.unlock.q}
 
 function openStage(id) {
   const s = stageById(id);
-  if (!s || !started || !isOpen(s)) return;
+  if (!s || !isOpen(s)) return;
   showView("play");
   const body = $("playBody");
   ENGINES[s.type].render(body, s, {
@@ -168,30 +129,19 @@ function hearts(root) {
   }
 }
 
-// mini cats on the hub reuse the courier's drawing
 function drawHubCats() {
-  const svg = document.querySelector("#cat .catbody svg").outerHTML;
+  const svg = $("catSvg").innerHTML;
   $("hubCats").innerHTML = `<div class="mini-cat">${svg}</div><div class="mini-cat grey flipped">${svg}</div>`;
   initScenes($("hubCats"), $("sceneCaption"));
 }
 
-const invite = initInvite({
-  sendLetter: ({ where, wish }) => send(
-    "💌 Письмо от неё\n\n" + [where && "Куда пойдём: " + where, wish && "Пожелания: " + wish].filter(Boolean).join("\n\n")),
-  goHub: () => { location.hash = "hub"; },
-});
-
-$("replay").addEventListener("click", () => { location.hash = "invite"; });
 $("back").addEventListener("click", () => { location.hash = "hub"; });
 
 function route() {
   const h = location.hash.slice(1);
-  let sent = false;
-  try { sent = localStorage.getItem("kotik.letterSent") === "1"; } catch (e) {}
-  if (h === "invite") { showView("invite"); invite.restart(); return; }
   if (h.startsWith("stage-") && stageById(h.slice(6))) { openStage(h.slice(6)); if (!views.play.hidden) return; }
-  if (h === "hub" || (sent && !h)) { renderHub(); showView("hub"); return; }
-  showView("invite");
+  renderHub();
+  showView("hub");
 }
 
 drawHubCats();
